@@ -23,7 +23,7 @@ std::string getFloatString(T v, GpuLanguage lang)
 {
     static_assert(!std::numeric_limits<T>::is_integer, "Only floating point values");
 
-    const T value = (lang == GPU_LANGUAGE_CG) ? (T)ClampToNormHalf(v) : v;
+    const T value = v;
 
     T integerpart = (T)0;
     const T fracpart = std::modf(value, &integerpart);
@@ -51,7 +51,7 @@ std::string getVecKeyword(GpuLanguage lang)
         }
         case GPU_LANGUAGE_CG:
         {
-            kw << "half" << N;
+            kw << "float" << N;
             break;
         }
 
@@ -356,7 +356,7 @@ std::string GpuShaderText::constKeyword() const
 
 std::string GpuShaderText::floatKeyword() const
 {
-    return (m_lang == GPU_LANGUAGE_CG ? "half" : "float");
+    return "float";
 }
 
 std::string GpuShaderText::floatKeywordConst() const
@@ -904,7 +904,7 @@ std::string matrix4Mul(const T * m4x4, const std::string & vecName, GpuLanguage 
         }
         case GPU_LANGUAGE_CG:
         {
-            kw << "mul(half4x4(" 
+            kw << "mul(float4x4("
                 << getMatrixValues<T, 4>(m4x4, lang, false) << "), " << vecName << ")";
             break;
         }
