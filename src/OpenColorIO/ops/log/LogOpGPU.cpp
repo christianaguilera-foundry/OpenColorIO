@@ -17,9 +17,13 @@ namespace
 
 void AddLogShader(GpuShaderCreatorRcPtr & shaderCreator, ConstLogOpDataRcPtr & /* logData */, float base)
 {
-    const float minValue = std::numeric_limits<float>::min();
+    const GpuLanguage lang = shaderCreator->getLanguage();
 
-    GpuShaderText st(shaderCreator->getLanguage());
+    const float minValue = lang == GPU_LANGUAGE_CG
+                               ? GetHalfNormMin()
+                               : std::numeric_limits<float>::min();
+
+    GpuShaderText st(lang);
 
     st.indent();
     st.newLine() << "";
@@ -127,9 +131,13 @@ void AddLinToLogShader(GpuShaderCreatorRcPtr & shaderCreator, ConstLogOpDataRcPt
     const auto & paramsB = logData->getBlueParams();
     const double base = logData->getBase();
 
-    const float minValue = std::numeric_limits<float>::min();
+    const GpuLanguage lang = shaderCreator->getLanguage();
 
-    GpuShaderText st(shaderCreator->getLanguage());
+    const float minValue = lang == GPU_LANGUAGE_CG
+                               ? GetHalfNormMin()
+                               : std::numeric_limits<float>::min();
+
+    GpuShaderText st(lang);
 
     st.indent();
     st.newLine() << "";
@@ -269,9 +277,13 @@ void AddCameraLinToLogShader(GpuShaderCreatorRcPtr & shaderCreator,
                                    (float)(paramsG[LOG_SIDE_SLOPE] / log(base)),
                                    (float)(paramsB[LOG_SIDE_SLOPE] / log(base)) };
 
-    const float minValue = std::numeric_limits<float>::min();
+    const GpuLanguage lang = shaderCreator->getLanguage();
 
-    GpuShaderText st(shaderCreator->getLanguage());
+    const float minValue = lang == GPU_LANGUAGE_CG
+                               ? GetHalfNormMin()
+                               : std::numeric_limits<float>::min();
+
+    GpuShaderText st(lang);
 
     st.indent();
     st.newLine() << "";
